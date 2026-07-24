@@ -1,0 +1,25 @@
+# gid-service configuration reference.
+# Copy to config.yaml and edit. Real secrets come from env vars or a secret
+# manager — never commit production values.
+#
+# All values below match their built-in defaults; override via env (GID_SERVICE_*)
+# or this file. See pkg/config/config.go for additional options (e.g., log.file rotation).
+
+server:
+  grpc_addr: ":9000"  # gRPC listen address
+  http_addr: ":8080"  # grpc-gateway listen address
+
+snowflake:
+  machine_id: 1                       # 1..65535, MUST be unique across instances
+  start_time: "2026-01-01T00:00:00Z"  # project epoch; never change after first ID is generated
+
+# Cron is scaffold-only — uncomment + populate when wiring the first periodic
+# job. See internal/service/service.go setupJobs for the activation steps.
+#
+# cron:
+#   timezone: "Asia/Shanghai"
+#   overlap_policy: "skip"
+
+log:
+  level: "info"
+  format: "json"

@@ -1,0 +1,33 @@
+// Command server is the gid-service gRPC + HTTP entry point.
+package main
+
+import (
+	"log/slog"
+	"os"
+
+	"github.com/servekit/go-common/logging"
+	"github.com/servekit/go-common/signalx"
+
+	gidservice "github.com/servekit/gid-service/pkg"
+	"github.com/servekit/gid-service/pkg/config"
+)
+
+func main() {
+	cfg, err := config.Load()
+	if err != nil {
+		slog.Error("load config", "error", err)
+		os.Exit(1)
+	}
+	logging.Setup(cfg.Log)
+
+	srv, err := gidservice.NewServer(cfg)
+	if err != nil {
+		slog.Error("init server", "error", err)
+		os.Exit(1)
+	}
+
+	if err := signalx.RunWithForceQuit(srv); err != nil {
+		slog.Error("run server", "error", err)
+		os.Exit(1)
+	}
+}
