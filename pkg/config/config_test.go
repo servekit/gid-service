@@ -16,7 +16,7 @@ func TestValidate(t *testing.T) {
 	valid := func() *Config {
 		return &Config{
 			Server: &ServerConfig{
-				GRPCAddr: ":9000",
+				GRPCAddr: ":19091",
 				HTTPAddr: ":8080",
 			},
 			Snowflake: &SnowflakeConfig{
@@ -117,8 +117,8 @@ func TestExampleConfigsAreLoadable(t *testing.T) {
 	}
 
 	// Spot-check that ${VAR} was actually expanded, not left literal.
-	if cfg.Server.GRPCAddr != ":9000" {
-		t.Errorf("Server.GRPCAddr = %q, want %q", cfg.Server.GRPCAddr, ":9000")
+	if cfg.Server.GRPCAddr != ":19091" {
+		t.Errorf("Server.GRPCAddr = %q, want %q", cfg.Server.GRPCAddr, ":19091")
 	}
 	if cfg.Snowflake.MachineID != 1 {
 		t.Errorf("Snowflake.MachineID = %d, want 1", cfg.Snowflake.MachineID)

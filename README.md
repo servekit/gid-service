@@ -15,7 +15,7 @@
 周期任务统一走 `internal/jobs.Scheduler`（即使当前无 cron job 也保留框架）。
 
 三种运行模式：
-1. **独立 gRPC 服务** — `cmd/server/main.go` 启动，gRPC `:9000` + HTTP gateway `:8080`
+1. **独立 gRPC 服务** — `cmd/server/main.go` 启动，gRPC `:19091` + HTTP gateway `:18081`
 2. **HTTP gateway** — 自动注册到 gRPC server，REST 客户端可直接调用
 3. **in-process module** — 通过 `pkg.NewModule` 嵌入到父进程，无网络开销
 
@@ -27,21 +27,21 @@
 make run
 ```
 
-gRPC server 监听 `:9000`，HTTP gateway 监听 `:8080`。
+gRPC server 监听 `:19091`，HTTP gateway 监听 `:18081`。
 
 ### gRPC 调用
 
 ```bash
-grpcurl -plaintext -d '{}' localhost:9000 gid.v1.GidService/NextID
-grpcurl -plaintext -d '{"count":3}' localhost:9000 gid.v1.GidService/BatchNextID
+grpcurl -plaintext -d '{}' localhost:19091 gid.v1.GidService/NextID
+grpcurl -plaintext -d '{"count":3}' localhost:19091 gid.v1.GidService/BatchNextID
 ```
 
 ### HTTP gateway 调用
 
 ```bash
-curl http://localhost:8080/v1/gid/next
-curl -X POST http://localhost:8080/v1/gid/batch -d '{"count":3}'
-curl http://localhost:8080/v1/gid/decompose/24804801279688705
+curl http://localhost:18081/v1/gid/next
+curl -X POST http://localhost:18081/v1/gid/batch -d '{"count":3}'
+curl http://localhost:18081/v1/gid/decompose/24804801279688705
 ```
 
 ### in-process module（被其他 Go 服务 import）

@@ -10,7 +10,7 @@
 //
 // Client usage:
 //
-//	c, _ := gidservice.NewClient("localhost:9000")
+//	c, _ := gidservice.NewClient("localhost:19091")
 //	defer c.Close()
 //	resp, err := c.NextID(ctx, &pb.NextIDRequest{})
 //

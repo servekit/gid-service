@@ -30,8 +30,8 @@ type Config struct {
 
 // ServerConfig holds gRPC and HTTP server addresses.
 type ServerConfig struct {
-	GRPCAddr string `default:":9000"`
-	HTTPAddr string `default:":8080"`
+	GRPCAddr string `default:":19091"`
+	HTTPAddr string `default:":18081"`
 }
 
 // SnowflakeConfig holds snowflake ID generator settings.
