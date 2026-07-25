@@ -11,7 +11,7 @@
 
 - Proto 定义在 `api/proto/gid/v1/gid.proto`
 - 使用 `buf` 生成代码到 `gen/` 目录
-- gRPC server 监听 `:9000`，grpc-gateway 监听 `:8080`
+- gRPC server 监听 `:19091`，grpc-gateway 监听 `:18081`
 
 ### 错误处理
 
@@ -85,3 +85,28 @@ gid-service/
 ├── go.mod
 └── go.sum
 ```
+
+## 运行模式
+
+三种运行形态：
+
+1. **独立 gRPC 服务** — `cmd/server/main.go` 启动，gRPC `:19091` + HTTP gateway `:18081`
+2. **HTTP gateway** — 自动注册到 gRPC server，REST 客户端可直接调用
+3. **in-process module** — 通过 `pkg.NewModule` 嵌入到父进程，无网络开销，不启动 gRPC/gateway
+
+基础设施归 `internal/provider/`（snowflake 这种"能力提供者"不属于业务领域）；
+周期任务统一走 `internal/jobs.Scheduler`（即使当前无 cron job 也保留框架）。
+
+## 开发命令
+
+```bash
+make fmt vet lint test   # 格式化、静态检查、测试
+make proto               # 重生成 gen/
+make run                 # 本地启动（gRPC + gateway）
+```
+
+## 关联
+
+- 架构规则：`ai-kit-studio/skills/golang-service-development`
+- Go 风格：`ai-kit-studio/skills/golang-development`
+- 基础库：`go-common/skills/go-common-usage`
