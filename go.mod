@@ -8,7 +8,7 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.3
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.29.0
 	github.com/robfig/cron/v3 v3.0.1
-	github.com/servekit/go-common v0.0.0-20260723130254-570ffa65b1c5
+	github.com/servekit/go-common v0.0.0-20260724135115-ddfd1bbfbf36
 	github.com/sony/sonyflake/v2 v2.1.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20260414002931-afd174a4e478
 	google.golang.org/grpc v1.81.1
