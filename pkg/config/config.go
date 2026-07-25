@@ -40,12 +40,20 @@ type SnowflakeConfig struct {
 	StartTime time.Time `default:"2026-01-01T00:00:00Z"`
 }
 
-// Load reads and parses configuration.
+// Load reads configuration from file and environment, expands ${VAR}
+// references in the file against the environment, applies defaults, then
+// validates and returns a Config.
+//
+// Env expansion lets config.yaml reference deploy-time values by name
+// (e.g. snowflake.machine_id: ${SNOWFLAKE_MACHINE_ID}) instead of holding
+// the literal. Unset vars expand to "" (os.ExpandEnv semantics), which
+// Validate then surfaces as a missing-required-field error.
 func Load() (*Config, error) {
 	var cfg Config
 	if err := configx.Load(&cfg,
 		configx.WithServiceName(serviceName),
 		configx.WithEnvPrefix(envPrefix),
+		configx.WithExpandEnv(),
 	); err != nil {
 		return nil, err
 	}
