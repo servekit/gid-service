@@ -8,7 +8,7 @@ import (
 	"github.com/servekit/go-common/logging"
 	"github.com/servekit/go-common/signalx"
 
-	gidservice "github.com/servekit/gid-service/pkg"
+	pkg "github.com/servekit/gid-service/pkg"
 	"github.com/servekit/gid-service/pkg/config"
 )
 
@@ -20,7 +20,7 @@ func main() {
 	}
 	logging.Setup(cfg.Log)
 
-	srv, err := gidservice.NewServer(cfg)
+	srv, err := pkg.NewServer(cfg)
 	if err != nil {
 		slog.Error("init server", "error", err)
 		os.Exit(1)
