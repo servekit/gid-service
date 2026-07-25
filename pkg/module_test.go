@@ -18,7 +18,12 @@ var (
 )
 
 func TestModuleBatchNextIDRejectsInvalidCount(t *testing.T) {
-	hdl, err := NewModule(1, time.Now().Add(-time.Hour))
+	hdl, err := NewModule(&config.Config{
+		Snowflake: &config.SnowflakeConfig{
+			MachineID: 1,
+			StartTime: time.Now().Add(-time.Hour),
+		},
+	})
 	if err != nil {
 		t.Fatalf("NewModule() error = %v", err)
 	}
@@ -29,15 +34,15 @@ func TestModuleBatchNextIDRejectsInvalidCount(t *testing.T) {
 	}
 }
 
-func TestNewModuleFromConfigDoesNotRequireServerConfig(t *testing.T) {
-	hdl, err := NewModuleFromConfig(&config.Config{
+func TestNewModuleDoesNotRequireServerConfig(t *testing.T) {
+	hdl, err := NewModule(&config.Config{
 		Snowflake: &config.SnowflakeConfig{
 			MachineID: 1,
 			StartTime: time.Now().Add(-time.Hour),
 		},
 	})
 	if err != nil {
-		t.Fatalf("NewModuleFromConfig() error = %v", err)
+		t.Fatalf("NewModule() error = %v", err)
 	}
 
 	if err := hdl.Start(); err != nil {
@@ -49,7 +54,12 @@ func TestNewModuleFromConfigDoesNotRequireServerConfig(t *testing.T) {
 }
 
 func TestModuleNextIDRoundTrip(t *testing.T) {
-	hdl, err := NewModule(1, time.Now().Add(-time.Hour))
+	hdl, err := NewModule(&config.Config{
+		Snowflake: &config.SnowflakeConfig{
+			MachineID: 1,
+			StartTime: time.Now().Add(-time.Hour),
+		},
+	})
 	if err != nil {
 		t.Fatalf("NewModule() error = %v", err)
 	}

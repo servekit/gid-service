@@ -16,7 +16,7 @@
 //
 // Module usage:
 //
-//	hdl, _ := gidservice.NewModule(1, time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC))
+//	hdl, _ := gidservice.NewModule(cfg)
 //	defer hdl.Stop()
 //	resp, err := hdl.NextID(ctx, &pb.NextIDRequest{})
 package gidservice
