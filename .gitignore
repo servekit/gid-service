@@ -19,6 +19,7 @@ go.work.sum
 # Config (contains secrets)
 config.yaml
 *.local.yaml
+.env
 
 # IDE
 .idea/
@@ -46,3 +47,6 @@ go.mod.tmp
 
 # Claude Code
 .claude/
+
+# Local skill artifacts
+docs/superpowers
