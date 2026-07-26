@@ -1,31 +1,31 @@
 # gid-service configuration reference.
 #
-# All values are ${VAR} references resolved from the environment at load time
+# All values are ${GID_SERVICE_VAR} references resolved from the environment at load time
 # (see pkg/config/config.go -> configx.WithExpandEnv). Copy to config.yaml and
 # keep the structure; set the actual values in .env (see .env.example).
 #
-# This service has no secrets. The ${VAR} indirection keeps a uniform deploy
+# This service has no secrets. The ${GID_SERVICE_VAR} indirection keeps a uniform deploy
 # workflow with sibling services: structure lives in git, values in .env.
 
 server:
   # gRPC listen address
-  grpc_addr: ${SERVER_GRPC_ADDR}
+  grpc_addr: ${GID_SERVICE_SERVER_GRPC_ADDR}
   # grpc-gateway listen address
-  http_addr: ${SERVER_HTTP_ADDR}
+  http_addr: ${GID_SERVICE_SERVER_HTTP_ADDR}
 
 snowflake:
   # 1..65535, MUST be unique across instances
-  machine_id: ${SNOWFLAKE_MACHINE_ID}
+  machine_id: ${GID_SERVICE_SNOWFLAKE_MACHINE_ID}
   # project epoch; never change after the first ID is generated
-  start_time: ${SNOWFLAKE_START_TIME}
+  start_time: ${GID_SERVICE_SNOWFLAKE_START_TIME}
 
 # Cron is scaffold-only — uncomment + populate when wiring the first periodic
 # job. See internal/service/service.go setupJobs for the activation steps.
 #
 # cron:
-#   timezone: ${CRON_TIMEZONE}
-#   overlap_policy: ${CRON_OVERLAP_POLICY}
+#   timezone: ${GID_SERVICE_CRON_TIMEZONE}
+#   overlap_policy: ${GID_SERVICE_CRON_OVERLAP_POLICY}
 
 log:
-  level: ${LOG_LEVEL}
-  format: ${LOG_FORMAT}
+  level: ${GID_SERVICE_LOG_LEVEL}
+  format: ${GID_SERVICE_LOG_FORMAT}
