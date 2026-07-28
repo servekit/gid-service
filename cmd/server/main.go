@@ -12,6 +12,8 @@ import (
 
 	pkg "github.com/servekit/gid-service/pkg"
 	"github.com/servekit/gid-service/pkg/config"
+
+	"github.com/servekit/gid-service/internal/version"
 )
 
 func main() {
@@ -27,6 +29,7 @@ func main() {
 		os.Exit(1)
 	}
 	logging.Setup(cfg.Log)
+	slog.Info("starting", "service", "gid-service", "version", version.Get().String())
 
 	srv, err := pkg.NewServer(cfg)
 	if err != nil {

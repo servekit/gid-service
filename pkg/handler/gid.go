@@ -11,6 +11,7 @@ import (
 	"context"
 
 	"github.com/servekit/go-common/signalx"
+	"google.golang.org/protobuf/types/known/emptypb"
 
 	gidv1 "github.com/servekit/gid-service/gen/gid/v1"
 	"github.com/servekit/gid-service/internal/service"
@@ -43,6 +44,11 @@ func (h *Handler) Start() error { return h.svc.Start() }
 // Stop releases resources owned by the service. After Stop, the Handler
 // must not be used.
 func (h *Handler) Stop() error { return h.svc.Stop() }
+
+// Ping is a health-check RPC.
+func (h *Handler) Ping(ctx context.Context, _ *emptypb.Empty) (*gidv1.Pong, error) {
+	return h.svc.Ping(ctx)
+}
 
 // NextID delegates to service.NextID.
 func (h *Handler) NextID(ctx context.Context, req *gidv1.NextIDRequest) (*gidv1.NextIDResponse, error) {

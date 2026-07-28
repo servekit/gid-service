@@ -7,14 +7,14 @@
 package gidv1
 
 import (
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
-
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
 )
 
 const (
@@ -24,6 +24,117 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Pong is the health-check response — only public, non-sensitive info
+// (service name, version, git/build info, timestamps). Never include internal
+// addresses, IPs, env vars, secrets, or dependency topology here.
+type Pong struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Service       string                 `protobuf:"bytes,1,opt,name=service,proto3" json:"service,omitempty"`                       // service name, e.g. "gid-service"
+	Version       string                 `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`                       // semantic version (ldflags; "dev" by default)
+	GitCommit     string                 `protobuf:"bytes,3,opt,name=git_commit,json=gitCommit,proto3" json:"git_commit,omitempty"`  // short commit hash (ldflags or VCS-embedded)
+	GitBranch     string                 `protobuf:"bytes,4,opt,name=git_branch,json=gitBranch,proto3" json:"git_branch,omitempty"`  // git branch (ldflags)
+	BuildTime     string                 `protobuf:"bytes,5,opt,name=build_time,json=buildTime,proto3" json:"build_time,omitempty"`  // build time, RFC3339 UTC (ldflags)
+	GoVersion     string                 `protobuf:"bytes,6,opt,name=go_version,json=goVersion,proto3" json:"go_version,omitempty"`  // Go toolchain version (runtime, not injected)
+	Status        string                 `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"`                         // "SERVING" when serving normally
+	Now           int64                  `protobuf:"varint,8,opt,name=now,proto3" json:"now,omitempty"`                              // server time, Unix millis
+	StartedAt     int64                  `protobuf:"varint,9,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"` // process start time, Unix millis (uptime)
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Pong) Reset() {
+	*x = Pong{}
+	mi := &file_gid_v1_gid_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Pong) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Pong) ProtoMessage() {}
+
+func (x *Pong) ProtoReflect() protoreflect.Message {
+	mi := &file_gid_v1_gid_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Pong.ProtoReflect.Descriptor instead.
+func (*Pong) Descriptor() ([]byte, []int) {
+	return file_gid_v1_gid_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *Pong) GetService() string {
+	if x != nil {
+		return x.Service
+	}
+	return ""
+}
+
+func (x *Pong) GetVersion() string {
+	if x != nil {
+		return x.Version
+	}
+	return ""
+}
+
+func (x *Pong) GetGitCommit() string {
+	if x != nil {
+		return x.GitCommit
+	}
+	return ""
+}
+
+func (x *Pong) GetGitBranch() string {
+	if x != nil {
+		return x.GitBranch
+	}
+	return ""
+}
+
+func (x *Pong) GetBuildTime() string {
+	if x != nil {
+		return x.BuildTime
+	}
+	return ""
+}
+
+func (x *Pong) GetGoVersion() string {
+	if x != nil {
+		return x.GoVersion
+	}
+	return ""
+}
+
+func (x *Pong) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *Pong) GetNow() int64 {
+	if x != nil {
+		return x.Now
+	}
+	return 0
+}
+
+func (x *Pong) GetStartedAt() int64 {
+	if x != nil {
+		return x.StartedAt
+	}
+	return 0
+}
+
 type NextIDRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -32,7 +143,7 @@ type NextIDRequest struct {
 
 func (x *NextIDRequest) Reset() {
 	*x = NextIDRequest{}
-	mi := &file_gid_v1_gid_proto_msgTypes[0]
+	mi := &file_gid_v1_gid_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -44,7 +155,7 @@ func (x *NextIDRequest) String() string {
 func (*NextIDRequest) ProtoMessage() {}
 
 func (x *NextIDRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_gid_v1_gid_proto_msgTypes[0]
+	mi := &file_gid_v1_gid_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -57,7 +168,7 @@ func (x *NextIDRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NextIDRequest.ProtoReflect.Descriptor instead.
 func (*NextIDRequest) Descriptor() ([]byte, []int) {
-	return file_gid_v1_gid_proto_rawDescGZIP(), []int{0}
+	return file_gid_v1_gid_proto_rawDescGZIP(), []int{1}
 }
 
 type NextIDResponse struct {
@@ -69,7 +180,7 @@ type NextIDResponse struct {
 
 func (x *NextIDResponse) Reset() {
 	*x = NextIDResponse{}
-	mi := &file_gid_v1_gid_proto_msgTypes[1]
+	mi := &file_gid_v1_gid_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -81,7 +192,7 @@ func (x *NextIDResponse) String() string {
 func (*NextIDResponse) ProtoMessage() {}
 
 func (x *NextIDResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_gid_v1_gid_proto_msgTypes[1]
+	mi := &file_gid_v1_gid_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -94,7 +205,7 @@ func (x *NextIDResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NextIDResponse.ProtoReflect.Descriptor instead.
 func (*NextIDResponse) Descriptor() ([]byte, []int) {
-	return file_gid_v1_gid_proto_rawDescGZIP(), []int{1}
+	return file_gid_v1_gid_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *NextIDResponse) GetId() int64 {
@@ -113,7 +224,7 @@ type BatchNextIDRequest struct {
 
 func (x *BatchNextIDRequest) Reset() {
 	*x = BatchNextIDRequest{}
-	mi := &file_gid_v1_gid_proto_msgTypes[2]
+	mi := &file_gid_v1_gid_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -125,7 +236,7 @@ func (x *BatchNextIDRequest) String() string {
 func (*BatchNextIDRequest) ProtoMessage() {}
 
 func (x *BatchNextIDRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_gid_v1_gid_proto_msgTypes[2]
+	mi := &file_gid_v1_gid_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -138,7 +249,7 @@ func (x *BatchNextIDRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchNextIDRequest.ProtoReflect.Descriptor instead.
 func (*BatchNextIDRequest) Descriptor() ([]byte, []int) {
-	return file_gid_v1_gid_proto_rawDescGZIP(), []int{2}
+	return file_gid_v1_gid_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *BatchNextIDRequest) GetCount() int32 {
@@ -157,7 +268,7 @@ type BatchNextIDResponse struct {
 
 func (x *BatchNextIDResponse) Reset() {
 	*x = BatchNextIDResponse{}
-	mi := &file_gid_v1_gid_proto_msgTypes[3]
+	mi := &file_gid_v1_gid_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -169,7 +280,7 @@ func (x *BatchNextIDResponse) String() string {
 func (*BatchNextIDResponse) ProtoMessage() {}
 
 func (x *BatchNextIDResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_gid_v1_gid_proto_msgTypes[3]
+	mi := &file_gid_v1_gid_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -182,7 +293,7 @@ func (x *BatchNextIDResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchNextIDResponse.ProtoReflect.Descriptor instead.
 func (*BatchNextIDResponse) Descriptor() ([]byte, []int) {
-	return file_gid_v1_gid_proto_rawDescGZIP(), []int{3}
+	return file_gid_v1_gid_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *BatchNextIDResponse) GetIds() []int64 {
@@ -201,7 +312,7 @@ type DecomposeRequest struct {
 
 func (x *DecomposeRequest) Reset() {
 	*x = DecomposeRequest{}
-	mi := &file_gid_v1_gid_proto_msgTypes[4]
+	mi := &file_gid_v1_gid_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -213,7 +324,7 @@ func (x *DecomposeRequest) String() string {
 func (*DecomposeRequest) ProtoMessage() {}
 
 func (x *DecomposeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_gid_v1_gid_proto_msgTypes[4]
+	mi := &file_gid_v1_gid_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -226,7 +337,7 @@ func (x *DecomposeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DecomposeRequest.ProtoReflect.Descriptor instead.
 func (*DecomposeRequest) Descriptor() ([]byte, []int) {
-	return file_gid_v1_gid_proto_rawDescGZIP(), []int{4}
+	return file_gid_v1_gid_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *DecomposeRequest) GetId() int64 {
@@ -248,7 +359,7 @@ type DecomposeResponse struct {
 
 func (x *DecomposeResponse) Reset() {
 	*x = DecomposeResponse{}
-	mi := &file_gid_v1_gid_proto_msgTypes[5]
+	mi := &file_gid_v1_gid_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -260,7 +371,7 @@ func (x *DecomposeResponse) String() string {
 func (*DecomposeResponse) ProtoMessage() {}
 
 func (x *DecomposeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_gid_v1_gid_proto_msgTypes[5]
+	mi := &file_gid_v1_gid_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -273,7 +384,7 @@ func (x *DecomposeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DecomposeResponse.ProtoReflect.Descriptor instead.
 func (*DecomposeResponse) Descriptor() ([]byte, []int) {
-	return file_gid_v1_gid_proto_rawDescGZIP(), []int{5}
+	return file_gid_v1_gid_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *DecomposeResponse) GetTime() int64 {
@@ -308,7 +419,22 @@ var File_gid_v1_gid_proto protoreflect.FileDescriptor
 
 const file_gid_v1_gid_proto_rawDesc = "" +
 	"\n" +
-	"\x10gid/v1/gid.proto\x12\x06gid.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\"\x0f\n" +
+	"\x10gid/v1/gid.proto\x12\x06gid.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\"\xff\x01\n" +
+	"\x04Pong\x12\x18\n" +
+	"\aservice\x18\x01 \x01(\tR\aservice\x12\x18\n" +
+	"\aversion\x18\x02 \x01(\tR\aversion\x12\x1d\n" +
+	"\n" +
+	"git_commit\x18\x03 \x01(\tR\tgitCommit\x12\x1d\n" +
+	"\n" +
+	"git_branch\x18\x04 \x01(\tR\tgitBranch\x12\x1d\n" +
+	"\n" +
+	"build_time\x18\x05 \x01(\tR\tbuildTime\x12\x1d\n" +
+	"\n" +
+	"go_version\x18\x06 \x01(\tR\tgoVersion\x12\x16\n" +
+	"\x06status\x18\a \x01(\tR\x06status\x12\x10\n" +
+	"\x03now\x18\b \x01(\x03R\x03now\x12\x1d\n" +
+	"\n" +
+	"started_at\x18\t \x01(\x03R\tstartedAt\"\x0f\n" +
 	"\rNextIDRequest\" \n" +
 	"\x0eNextIDResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"6\n" +
@@ -324,14 +450,15 @@ const file_gid_v1_gid_proto_rawDesc = "" +
 	"\bsequence\x18\x02 \x01(\x03R\bsequence\x12\x1d\n" +
 	"\n" +
 	"machine_id\x18\x03 \x01(\x03R\tmachineId\x12!\n" +
-	"\fgenerated_at\x18\x04 \x01(\tR\vgeneratedAt2\x9f\x02\n" +
+	"\fgenerated_at\x18\x04 \x01(\tR\vgeneratedAt2\xdc\x02\n" +
 	"\n" +
-	"GidService\x12M\n" +
+	"GidService\x12;\n" +
+	"\x04Ping\x12\x16.google.protobuf.Empty\x1a\f.gid.v1.Pong\"\r\x82\xd3\xe4\x93\x02\a\x12\x05/ping\x12M\n" +
 	"\x06NextID\x12\x15.gid.v1.NextIDRequest\x1a\x16.gid.v1.NextIDResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/v1/gid/next\x12`\n" +
 	"\vBatchNextID\x12\x1a.gid.v1.BatchNextIDRequest\x1a\x1b.gid.v1.BatchNextIDResponse\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/gid/batch\x12`\n" +
-	"\tDecompose\x12\x18.gid.v1.DecomposeRequest\x1a\x19.gid.v1.DecomposeResponse\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/gid/decompose/{id}Bm\n" +
+	"\tDecompose\x12\x18.gid.v1.DecomposeRequest\x1a\x19.gid.v1.DecomposeResponse\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/gid/decompose/{id}B\x81\x01\n" +
 	"\n" +
-	"com.gid.v1B\bGidProtoP\x01Z\x1cgid-service/gen/gid/v1;gidv1\xa2\x02\x03GXX\xaa\x02\x06Gid.V1\xca\x02\x06Gid\\V1\xe2\x02\x12Gid\\V1\\GPBMetadata\xea\x02\aGid::V1b\x06proto3"
+	"com.gid.v1B\bGidProtoP\x01Z0github.com/servekit/gid-service/gen/gid/v1;gidv1\xa2\x02\x03GXX\xaa\x02\x06Gid.V1\xca\x02\x06Gid\\V1\xe2\x02\x12Gid\\V1\\GPBMetadata\xea\x02\aGid::V1b\x06proto3"
 
 var (
 	file_gid_v1_gid_proto_rawDescOnce sync.Once
@@ -345,24 +472,28 @@ func file_gid_v1_gid_proto_rawDescGZIP() []byte {
 	return file_gid_v1_gid_proto_rawDescData
 }
 
-var file_gid_v1_gid_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_gid_v1_gid_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_gid_v1_gid_proto_goTypes = []any{
-	(*NextIDRequest)(nil),       // 0: gid.v1.NextIDRequest
-	(*NextIDResponse)(nil),      // 1: gid.v1.NextIDResponse
-	(*BatchNextIDRequest)(nil),  // 2: gid.v1.BatchNextIDRequest
-	(*BatchNextIDResponse)(nil), // 3: gid.v1.BatchNextIDResponse
-	(*DecomposeRequest)(nil),    // 4: gid.v1.DecomposeRequest
-	(*DecomposeResponse)(nil),   // 5: gid.v1.DecomposeResponse
+	(*Pong)(nil),                // 0: gid.v1.Pong
+	(*NextIDRequest)(nil),       // 1: gid.v1.NextIDRequest
+	(*NextIDResponse)(nil),      // 2: gid.v1.NextIDResponse
+	(*BatchNextIDRequest)(nil),  // 3: gid.v1.BatchNextIDRequest
+	(*BatchNextIDResponse)(nil), // 4: gid.v1.BatchNextIDResponse
+	(*DecomposeRequest)(nil),    // 5: gid.v1.DecomposeRequest
+	(*DecomposeResponse)(nil),   // 6: gid.v1.DecomposeResponse
+	(*emptypb.Empty)(nil),       // 7: google.protobuf.Empty
 }
 var file_gid_v1_gid_proto_depIdxs = []int32{
-	0, // 0: gid.v1.GidService.NextID:input_type -> gid.v1.NextIDRequest
-	2, // 1: gid.v1.GidService.BatchNextID:input_type -> gid.v1.BatchNextIDRequest
-	4, // 2: gid.v1.GidService.Decompose:input_type -> gid.v1.DecomposeRequest
-	1, // 3: gid.v1.GidService.NextID:output_type -> gid.v1.NextIDResponse
-	3, // 4: gid.v1.GidService.BatchNextID:output_type -> gid.v1.BatchNextIDResponse
-	5, // 5: gid.v1.GidService.Decompose:output_type -> gid.v1.DecomposeResponse
-	3, // [3:6] is the sub-list for method output_type
-	0, // [0:3] is the sub-list for method input_type
+	7, // 0: gid.v1.GidService.Ping:input_type -> google.protobuf.Empty
+	1, // 1: gid.v1.GidService.NextID:input_type -> gid.v1.NextIDRequest
+	3, // 2: gid.v1.GidService.BatchNextID:input_type -> gid.v1.BatchNextIDRequest
+	5, // 3: gid.v1.GidService.Decompose:input_type -> gid.v1.DecomposeRequest
+	0, // 4: gid.v1.GidService.Ping:output_type -> gid.v1.Pong
+	2, // 5: gid.v1.GidService.NextID:output_type -> gid.v1.NextIDResponse
+	4, // 6: gid.v1.GidService.BatchNextID:output_type -> gid.v1.BatchNextIDResponse
+	6, // 7: gid.v1.GidService.Decompose:output_type -> gid.v1.DecomposeResponse
+	4, // [4:8] is the sub-list for method output_type
+	0, // [0:4] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -379,7 +510,7 @@ func file_gid_v1_gid_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_gid_v1_gid_proto_rawDesc), len(file_gid_v1_gid_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

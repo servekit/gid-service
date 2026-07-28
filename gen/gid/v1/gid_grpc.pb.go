@@ -8,10 +8,10 @@ package gidv1
 
 import (
 	context "context"
-
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -20,6 +20,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
+	GidService_Ping_FullMethodName        = "/gid.v1.GidService/Ping"
 	GidService_NextID_FullMethodName      = "/gid.v1.GidService/NextID"
 	GidService_BatchNextID_FullMethodName = "/gid.v1.GidService/BatchNextID"
 	GidService_Decompose_FullMethodName   = "/gid.v1.GidService/Decompose"
@@ -31,6 +32,7 @@ const (
 //
 // GidService provides global unique ID generation based on Sonyflake.
 type GidServiceClient interface {
+	Ping(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Pong, error)
 	// NextID generates a single unique ID.
 	NextID(ctx context.Context, in *NextIDRequest, opts ...grpc.CallOption) (*NextIDResponse, error)
 	// BatchNextID generates multiple unique IDs.
@@ -45,6 +47,16 @@ type gidServiceClient struct {
 
 func NewGidServiceClient(cc grpc.ClientConnInterface) GidServiceClient {
 	return &gidServiceClient{cc}
+}
+
+func (c *gidServiceClient) Ping(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Pong, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Pong)
+	err := c.cc.Invoke(ctx, GidService_Ping_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *gidServiceClient) NextID(ctx context.Context, in *NextIDRequest, opts ...grpc.CallOption) (*NextIDResponse, error) {
@@ -83,6 +95,7 @@ func (c *gidServiceClient) Decompose(ctx context.Context, in *DecomposeRequest, 
 //
 // GidService provides global unique ID generation based on Sonyflake.
 type GidServiceServer interface {
+	Ping(context.Context, *emptypb.Empty) (*Pong, error)
 	// NextID generates a single unique ID.
 	NextID(context.Context, *NextIDRequest) (*NextIDResponse, error)
 	// BatchNextID generates multiple unique IDs.
@@ -99,6 +112,9 @@ type GidServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedGidServiceServer struct{}
 
+func (UnimplementedGidServiceServer) Ping(context.Context, *emptypb.Empty) (*Pong, error) {
+	return nil, status.Error(codes.Unimplemented, "method Ping not implemented")
+}
 func (UnimplementedGidServiceServer) NextID(context.Context, *NextIDRequest) (*NextIDResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method NextID not implemented")
 }
@@ -127,6 +143,24 @@ func RegisterGidServiceServer(s grpc.ServiceRegistrar, srv GidServiceServer) {
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&GidService_ServiceDesc, srv)
+}
+
+func _GidService_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GidServiceServer).Ping(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GidService_Ping_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GidServiceServer).Ping(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _GidService_NextID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -190,6 +224,10 @@ var GidService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "gid.v1.GidService",
 	HandlerType: (*GidServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Ping",
+			Handler:    _GidService_Ping_Handler,
+		},
 		{
 			MethodName: "NextID",
 			Handler:    _GidService_NextID_Handler,
