@@ -22,6 +22,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/servekit/go-common/lifecycle"
 
@@ -29,6 +30,7 @@ import (
 	"github.com/servekit/gid-service/internal/jobs"
 	"github.com/servekit/gid-service/internal/provider/snowflake"
 	"github.com/servekit/gid-service/internal/service/gid"
+	"github.com/servekit/gid-service/internal/version"
 	"github.com/servekit/gid-service/pkg/config"
 	"github.com/servekit/gid-service/pkg/option"
 )
@@ -46,6 +48,9 @@ type Service struct {
 
 	// One field per domain subpackage.
 	gid *gid.Service
+
+	// startedAt is set once in New; Ping returns it for uptime.
+	startedAt int64
 }
 
 // New constructs a Service from config and functional options.
@@ -77,6 +82,7 @@ func New(cfg *config.Config, opts ...option.Option) (*Service, error) {
 		mgr: mgr,
 		gen: gen,
 		gid: gid.New(gen),
+		startedAt: time.Now().UnixMilli(),
 	}
 
 	// Cron is scaffold-only — gid-service has no periodic jobs yet, so
@@ -101,6 +107,22 @@ func (s *Service) Start() error { return s.mgr.Start() }
 
 // Stop stops all owned components in reverse registration order.
 func (s *Service) Stop() error { return s.mgr.Stop() }
+
+// Ping is a health-check RPC. Returns only public, non-sensitive info.
+func (s *Service) Ping(ctx context.Context) (*gidv1.Pong, error) {
+	v := version.Get()
+	return &gidv1.Pong{
+		Service:   "gid-service",
+		Version:   v.Version,
+		GitCommit: v.GitCommit,
+		GitBranch: v.GitBranch,
+		BuildTime: v.BuildTime,
+		GoVersion: v.GoVersion,
+		Status:    "SERVING",
+		Now:       time.Now().UnixMilli(),
+		StartedAt: s.startedAt,
+	}, nil
+}
 
 // --- facade methods (one per RPC, delegate to subpackage) ---
 
