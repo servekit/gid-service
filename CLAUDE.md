@@ -10,7 +10,7 @@
 ### gRPC / Proto
 
 - Proto 定义在 `api/proto/gid/v1/gid.proto`
-- 使用 `buf` 生成代码到 `gen/` 目录
+- 使用 `buf` 生成代码到 `gen/` 目录；openapiv2 插件另从 `google.api.http` 注解派生 Swagger 2.0 文档到 `api/swagger/`（供前端/客户端消费），都由 `make proto` 产出
 - gRPC server 监听 `:19091`，grpc-gateway 监听 `:18081`
 
 ### 错误处理
@@ -62,6 +62,7 @@ gid-service 当前只有一个 `gid` 领域，子包为 `internal/service/gid/`�
 ```
 gid-service/
 ├── api/proto/gid/v1/       # Protobuf 定义
+├── api/swagger/            # buf 生成的 Swagger/OpenAPI 文档（供前端/客户端消费）
 ├── cmd/server/             # 启动入口
 ├── gen/                    # buf 生成代码
 ├── internal/

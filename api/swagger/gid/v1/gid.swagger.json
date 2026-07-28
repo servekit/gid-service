@@ -1,0 +1,255 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "gid/v1/gid.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "GidService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/ping": {
+      "get": {
+        "operationId": "Ping",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Pong"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "GidService"
+        ]
+      }
+    },
+    "/v1/gid/batch": {
+      "post": {
+        "summary": "BatchNextID generates multiple unique IDs.",
+        "operationId": "BatchNextID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1BatchNextIDResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1BatchNextIDRequest"
+            }
+          }
+        ],
+        "tags": [
+          "GidService"
+        ]
+      }
+    },
+    "/v1/gid/decompose/{id}": {
+      "get": {
+        "summary": "Decompose parses an ID into its components.",
+        "operationId": "Decompose",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DecomposeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "GidService"
+        ]
+      }
+    },
+    "/v1/gid/next": {
+      "get": {
+        "summary": "NextID generates a single unique ID.",
+        "operationId": "NextID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1NextIDResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "GidService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1BatchNextIDRequest": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "v1BatchNextIDResponse": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
+        }
+      }
+    },
+    "v1DecomposeResponse": {
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "string",
+          "format": "int64"
+        },
+        "sequence": {
+          "type": "string",
+          "format": "int64"
+        },
+        "machineId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "generatedAt": {
+          "type": "string",
+          "title": "ISO8601 timestamp"
+        }
+      }
+    },
+    "v1NextIDResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1Pong": {
+      "type": "object",
+      "properties": {
+        "service": {
+          "type": "string",
+          "title": "service name, e.g. \"gid-service\""
+        },
+        "version": {
+          "type": "string",
+          "title": "semantic version (ldflags; \"dev\" by default)"
+        },
+        "gitCommit": {
+          "type": "string",
+          "title": "short commit hash (ldflags or VCS-embedded)"
+        },
+        "gitBranch": {
+          "type": "string",
+          "title": "git branch (ldflags)"
+        },
+        "buildTime": {
+          "type": "string",
+          "title": "build time, RFC3339 UTC (ldflags)"
+        },
+        "goVersion": {
+          "type": "string",
+          "title": "Go toolchain version (runtime, not injected)"
+        },
+        "status": {
+          "type": "string",
+          "title": "\"SERVING\" when serving normally"
+        },
+        "now": {
+          "type": "string",
+          "format": "int64",
+          "title": "server time, Unix millis"
+        },
+        "startedAt": {
+          "type": "string",
+          "format": "int64",
+          "title": "process start time, Unix millis (uptime)"
+        }
+      },
+      "description": "Pong is the health-check response — only public, non-sensitive info\n(service name, version, git/build info, timestamps). Never include internal\naddresses, IPs, env vars, secrets, or dependency topology here."
+    }
+  }
+}
