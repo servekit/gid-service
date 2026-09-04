@@ -11,7 +11,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.29.0
 	github.com/joho/godotenv v1.5.1
 	github.com/robfig/cron/v3 v3.0.1
-	github.com/servekit/go-common v0.0.0-20260904082059-4f99a93f1b32
+	github.com/servekit/go-common v0.0.0-20260904094002-f2da83b5aa42
 	github.com/sony/sonyflake/v2 v2.1.0
 	github.com/stretchr/testify v1.11.1
 	google.golang.org/genproto/googleapis/api v0.0.0-20260414002931-afd174a4e478
