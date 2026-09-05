@@ -13,7 +13,6 @@ services:
         GOPROXY: ${GOPROXY:-https://proxy.golang.org,direct}
     environment:
       - GID_SERVICE_SERVER_GRPC_ADDR=${GID_SERVICE_SERVER_GRPC_ADDR:-:19091}
-      - GID_SERVICE_SERVER_HTTP_ADDR=${GID_SERVICE_SERVER_HTTP_ADDR:-:18081}
       - GID_SERVICE_LOG_LEVEL=${GID_SERVICE_LOG_LEVEL:-info}
       - GID_SERVICE_CRON_OVERLAP_POLICY=${GID_SERVICE_CRON_OVERLAP_POLICY:-}
       - GID_SERVICE_CRON_TIMEZONE=${GID_SERVICE_CRON_TIMEZONE:-}
@@ -23,7 +22,6 @@ services:
       - GID_SERVICE_VAR=${GID_SERVICE_VAR:-}
     ports:
       - "${HOST_GRPC_PORT:-19091}:19091"
-      - "${HOST_HTTP_PORT:-18081}:18081"
     healthcheck:
       test: ["CMD", "grpc_health_probe", "-addr=127.0.0.1:19091", "-connect-timeout=2s"]
       interval: ${HEALTHCHECK_INTERVAL:-10s}

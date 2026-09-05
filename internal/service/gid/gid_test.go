@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	pb "github.com/servekit/gid-service/gen/gid/v1"
+	pb "github.com/servekit/api/gen/go/gid/v1"
 	"github.com/servekit/gid-service/internal/provider/snowflake"
 )
 

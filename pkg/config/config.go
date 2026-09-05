@@ -28,10 +28,9 @@ type Config struct {
 	Log       *logging.Config
 }
 
-// ServerConfig holds gRPC and HTTP server addresses.
+// ServerConfig holds the gRPC server address.
 type ServerConfig struct {
 	GRPCAddr string `default:":19091"`
-	HTTPAddr string `default:":18081"`
 }
 
 // SnowflakeConfig holds snowflake ID generator settings.
@@ -75,9 +74,6 @@ func (cfg *Config) Validate() error {
 	}
 	if strings.TrimSpace(cfg.Server.GRPCAddr) == "" {
 		return xcodes.ErrServerGRPCAddrRequired
-	}
-	if strings.TrimSpace(cfg.Server.HTTPAddr) == "" {
-		return xcodes.ErrServerHTTPAddrRequired
 	}
 	if cfg.Snowflake == nil {
 		return cfg.ValidateSnowflake()

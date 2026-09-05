@@ -17,7 +17,7 @@ import (
 	"context"
 	"time"
 
-	gidv1 "github.com/servekit/gid-service/gen/gid/v1"
+	gidv1 "github.com/servekit/api/gen/go/gid/v1"
 	"github.com/servekit/gid-service/internal/provider/snowflake"
 )
 

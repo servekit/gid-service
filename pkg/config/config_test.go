@@ -17,7 +17,6 @@ func TestValidate(t *testing.T) {
 		return &Config{
 			Server: &ServerConfig{
 				GRPCAddr: ":19091",
-				HTTPAddr: ":8080",
 			},
 			Snowflake: &SnowflakeConfig{
 				MachineID: 1,
@@ -40,9 +39,6 @@ func TestValidate(t *testing.T) {
 		}, wantErr: true},
 		{name: "missing grpc addr", cfg: valid(), mutate: func(cfg *Config) {
 			cfg.Server.GRPCAddr = ""
-		}, wantErr: true},
-		{name: "missing http addr", cfg: valid(), mutate: func(cfg *Config) {
-			cfg.Server.HTTPAddr = ""
 		}, wantErr: true},
 		{name: "missing snowflake", cfg: valid(), mutate: func(cfg *Config) {
 			cfg.Snowflake = nil

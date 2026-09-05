@@ -26,7 +26,8 @@ import (
 
 	"github.com/servekit/go-common/lifecycle"
 
-	gidv1 "github.com/servekit/gid-service/gen/gid/v1"
+	commonv1 "github.com/servekit/api/gen/go/common/v1"
+	gidv1 "github.com/servekit/api/gen/go/gid/v1"
 	"github.com/servekit/gid-service/internal/jobs"
 	"github.com/servekit/gid-service/internal/provider/snowflake"
 	"github.com/servekit/gid-service/internal/service/gid"
@@ -78,10 +79,10 @@ func New(cfg *config.Config, opts ...option.Option) (*Service, error) {
 	}
 
 	svc := &Service{
-		cfg: cfg,
-		mgr: mgr,
-		gen: gen,
-		gid: gid.New(gen),
+		cfg:       cfg,
+		mgr:       mgr,
+		gen:       gen,
+		gid:       gid.New(gen),
 		startedAt: time.Now().UnixMilli(),
 	}
 
@@ -109,9 +110,9 @@ func (s *Service) Start() error { return s.mgr.Start() }
 func (s *Service) Stop() error { return s.mgr.Stop() }
 
 // Ping is a health-check RPC. Returns only public, non-sensitive info.
-func (s *Service) Ping(ctx context.Context) (*gidv1.Pong, error) {
+func (s *Service) Ping(ctx context.Context) (*commonv1.Pong, error) {
 	v := version.Get()
-	return &gidv1.Pong{
+	return &commonv1.Pong{
 		Service:   "gid-service",
 		Version:   v.Version,
 		GitCommit: v.GitCommit,

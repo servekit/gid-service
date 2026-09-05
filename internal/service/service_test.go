@@ -7,7 +7,7 @@ import (
 
 	"github.com/servekit/go-common/lifecycle"
 
-	pb "github.com/servekit/gid-service/gen/gid/v1"
+	pb "github.com/servekit/api/gen/go/gid/v1"
 	"github.com/servekit/gid-service/pkg/config"
 )
 
@@ -54,7 +54,6 @@ func testConfig() *config.Config {
 	return &config.Config{
 		Server: &config.ServerConfig{
 			GRPCAddr: ":9000",
-			HTTPAddr: ":8080",
 		},
 		Snowflake: &config.SnowflakeConfig{
 			MachineID: 1,

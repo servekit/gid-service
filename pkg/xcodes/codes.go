@@ -22,7 +22,6 @@ var (
 	ErrConfigRequired             = xerr.New("GID_CONFIG_REQUIRED", xerr.CategoryBadRequest, 400, "config is required").New()
 	ErrServerConfigRequired       = xerr.New("GID_SERVER_CONFIG_REQUIRED", xerr.CategoryBadRequest, 400, "server config is required").New()
 	ErrServerGRPCAddrRequired     = xerr.New("GID_SERVER_GRPC_ADDR_REQUIRED", xerr.CategoryBadRequest, 400, "server.grpc_addr is required").New()
-	ErrServerHTTPAddrRequired     = xerr.New("GID_SERVER_HTTP_ADDR_REQUIRED", xerr.CategoryBadRequest, 400, "server.http_addr is required").New()
 	ErrSnowflakeConfigRequired    = xerr.New("GID_SNOWFLAKE_CONFIG_REQUIRED", xerr.CategoryBadRequest, 400, "snowflake config is required").New()
 	ErrSnowflakeMachineIDInvalid  = xerr.New("GID_SNOWFLAKE_MACHINE_ID_INVALID", xerr.CategoryBadRequest, 400, "snowflake.machine_id must be between 1 and 65535").New()
 	ErrSnowflakeStartTimeRequired = xerr.New("GID_SNOWFLAKE_START_TIME_REQUIRED", xerr.CategoryBadRequest, 400, "snowflake.start_time is required").New()

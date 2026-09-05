@@ -3,7 +3,7 @@ package gidservice
 import (
 	"context"
 
-	gidv1 "github.com/servekit/gid-service/gen/gid/v1"
+	gidv1 "github.com/servekit/api/gen/go/gid/v1"
 )
 
 // Service is how a consumer holds gid-service regardless of backend: the

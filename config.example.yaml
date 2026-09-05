@@ -10,8 +10,6 @@
 server:
   # gRPC listen address
   grpc_addr: ${GID_SERVICE_SERVER_GRPC_ADDR}
-  # grpc-gateway listen address
-  http_addr: ${GID_SERVICE_SERVER_HTTP_ADDR}
 
 snowflake:
   # 1..65535, MUST be unique across instances

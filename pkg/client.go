@@ -3,7 +3,8 @@ package gidservice
 import (
 	"context"
 
-	pb "github.com/servekit/gid-service/gen/gid/v1"
+	commonv1 "github.com/servekit/api/gen/go/common/v1"
+	pb "github.com/servekit/api/gen/go/gid/v1"
 	"github.com/servekit/gid-service/pkg/xcodes"
 
 	"google.golang.org/grpc"
@@ -49,7 +50,7 @@ func (c *Client) Close() error {
 }
 
 // Ping delegates to the remote gid-service.
-func (c *Client) Ping(ctx context.Context, in *emptypb.Empty) (*pb.Pong, error) {
+func (c *Client) Ping(ctx context.Context, in *emptypb.Empty) (*commonv1.Pong, error) {
 	return c.cli.Ping(ctx, in)
 }
 

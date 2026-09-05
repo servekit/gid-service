@@ -3,15 +3,17 @@
 ## 项目定位
 
 全局 ID 生成服务。基于 Sonyflake 雪花算法，生成全局唯一 int64 ID。
-可独立部署为 gRPC 服务，也可作为 Go 模块 in-process 使用。
+可独立部署为 gRPC 服务，也可作为 Go 模块 in-process 使用。**纯 gRPC 服务**：
+不监听 HTTP，proto 不带 `google.api.http` 注解；对外 HTTP 面由网关
+（当前为 testkit-service）提供。
 
 ## 技术栈约定
 
 ### gRPC / Proto
 
-- Proto 定义在 `api/proto/gid/v1/gid.proto`
-- 使用 `buf` 生成代码到 `gen/` 目录；openapiv2 插件另从 `google.api.http` 注解派生 Swagger 2.0 文档到 `api/swagger/`（供前端/客户端消费），都由 `make proto` 产出
-- gRPC server 监听 `:19091`，grpc-gateway 监听 `:18081`
+- Proto 定义在契约仓库 `../api/gid/v1/`（三分文件：service/enums/message/request_response；本仓库不持有 proto）
+- 使用 `buf` 生成代码到 `gen/` 目录（protoc-gen-go + protoc-gen-go-grpc），由 `make proto` 产出
+- gRPC server 监听 `:19091`
 
 ### 错误处理
 
@@ -61,8 +63,6 @@ gid-service 当前只有一个 `gid` 领域，子包为 `internal/service/gid/`�
 
 ```
 gid-service/
-├── api/proto/gid/v1/       # Protobuf 定义
-├── api/swagger/            # buf 生成的 Swagger/OpenAPI 文档（供前端/客户端消费）
 ├── cmd/server/             # 启动入口
 ├── gen/                    # buf 生成代码
 ├── internal/
@@ -75,7 +75,7 @@ gid-service/
 ├── pkg/                    # 可被外部 import
 │   ├── client.go           # gRPC 客户端
 │   ├── module.go           # in-process 入口（返回 *handler.Handler）
-│   ├── server.go           # gRPC + gateway server
+│   ├── server.go           # gRPC server（纯 gRPC，无 gateway）
 │   ├── config/             # 配置加载（Server/Snowflake/Cron/Log）
 │   ├── handler/            # proto service 薄壳
 │   ├── option/             # functional options
@@ -89,11 +89,10 @@ gid-service/
 
 ## 运行模式
 
-三种运行形态：
+两种运行形态：
 
-1. **独立 gRPC 服务** — `cmd/server/main.go` 启动，gRPC `:19091` + HTTP gateway `:18081`
-2. **HTTP gateway** — 自动注册到 gRPC server，REST 客户端可直接调用
-3. **in-process module** — 通过 `pkg.NewModule` 嵌入到父进程，无网络开销，不启动 gRPC/gateway
+1. **独立 gRPC 服务** — `cmd/server/main.go` 启动，gRPC `:19091`
+2. **in-process module** — 通过 `pkg.NewModule` 嵌入到父进程，无网络开销，不启动 gRPC
 
 基础设施归 `internal/provider/`（snowflake 这种"能力提供者"不属于业务领域）；
 周期任务统一走 `internal/jobs.Scheduler`（即使当前无 cron job 也保留框架）。
@@ -102,8 +101,7 @@ gid-service/
 
 ```bash
 make fmt vet lint test   # 格式化、静态检查、测试
-make proto               # 重生成 gen/
-make run                 # 本地启动（gRPC + gateway）
+make run                 # 本地启动（gRPC）
 ```
 
 ## 关联

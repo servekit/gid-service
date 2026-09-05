@@ -1,4 +1,4 @@
-.PHONY: all build run test lint fmt vet proto tidy
+.PHONY: all build run test lint fmt vet tidy
 
 BIN_NAME := gid-service
 CMD_DIR  := cmd/server
@@ -39,10 +39,6 @@ fmt:
 ## vet: Run go vet
 vet:
 	go vet ./...
-
-## proto: Generate protobuf code with buf
-proto:
-	buf generate
 
 ## tidy: Run go mod tidy
 tidy:

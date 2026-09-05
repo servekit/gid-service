@@ -1,7 +1,8 @@
 # gid-service
 
 全局 ID 生成服务。基于 Sonyflake 雪花算法，生成全局唯一 int64 ID。
-可独立部署为 gRPC 服务，也可作为 Go 模块 in-process 使用。
+可独立部署为 gRPC 服务，也可作为 Go 模块 in-process 使用。**纯 gRPC 服务**，
+不监听 HTTP；对外 HTTP 面由网关（当前为 testkit-service）提供。
 
 ## 部署
 
@@ -12,7 +13,6 @@ make run
 默认监听：
 
 - gRPC：`:19091`
-- HTTP gateway：`:18081`
 
 地址及其它运行参数见 `config.yaml`，支持环境变量覆盖。
 
@@ -23,14 +23,6 @@ make run
 ```bash
 grpcurl -plaintext -d '{}' localhost:19091 gid.v1.GidService/NextID
 grpcurl -plaintext -d '{"count":3}' localhost:19091 gid.v1.GidService/BatchNextID
-```
-
-### HTTP gateway
-
-```bash
-curl http://localhost:18081/v1/gid/next
-curl -X POST http://localhost:18081/v1/gid/batch -d '{"count":3}'
-curl http://localhost:18081/v1/gid/decompose/24804801279688705
 ```
 
 ## 作为 Go 模块（in-process）
@@ -61,7 +53,7 @@ resp, err := hdl.NextID(ctx, &gidv1.NextIDRequest{})
 ```
 
 `Handler` 同时实现 `signalx.Service`（Start/Stop），生命周期管理与 RPC 调用共用同一对象。
-模块模式下无需配置 Server（gRPC/gateway 不启动）。
+模块模式下无需配置 Server（gRPC 不启动）。
 
 ## 注意事项
 
