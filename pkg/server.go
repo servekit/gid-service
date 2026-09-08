@@ -82,6 +82,7 @@ func NewServer(cfg *config.Config) (*Server, error) {
 		func(s *grpc.Server) { pb.RegisterGidServiceServer(s, hdl) },
 		nil, // no HTTP gateway — gRPC-only service
 		grpcx.ErrorInterceptor,
+		grpcx.TrustedActorUnary(),
 		protovalidate_middleware.UnaryServerInterceptor(validator),
 	)
 
