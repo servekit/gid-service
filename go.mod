@@ -2,7 +2,6 @@ module github.com/servekit/gid-service
 
 go 1.26.6
 
-
 require (
 	buf.build/go/protovalidate v1.2.0
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.3
